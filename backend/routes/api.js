@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
 const db = require('../data/database');
+const { verifySession } = require('../middleware/sessionAuth');
 
-// Get all guests
-router.get('/guests', (req, res) => {
+// Get all guests (protected)
+router.get('/guests', verifySession, (req, res) => {
     try {
         const rows = db.prepare('SELECT * FROM guests').all();
         res.json(rows);
@@ -91,8 +92,8 @@ router.post('/rsvp', (req, res) => {
     }
 });
 
-// Get all RSVP
-router.get('/rsvp', (req, res) => {
+// Get all RSVP (protected)
+router.get('/rsvp', verifySession, (req, res) => {
     try {
         const rows = db.prepare('SELECT * FROM rsvp').all();
         res.json(rows);
@@ -136,8 +137,8 @@ router.post('/wishes', (req, res) => {
     }
 });
 
-// Get all wishes
-router.get('/wishes', (req, res) => {
+// Get all wishes (protected)
+router.get('/wishes', verifySession, (req, res) => {
     try {
         const rows = db.prepare('SELECT * FROM wishes').all();
         res.json(rows);
