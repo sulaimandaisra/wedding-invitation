@@ -48,4 +48,4 @@ router.post('/logout', verifySession, (req, res) => {
     res.json({ message: 'Logged out successfully' });
 });
 
-module.exports = { router, verifySession };
+module.exports = router;
