@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Wedding Invitation</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        .font-serif-elegant { font-family: 'Cormorant Garamond', serif; }
+    </style>
+</head>
+<body class="bg-[#fcfbf7] min-h-screen flex items-center justify-center font-serif-elegant">
+    <div class="max-w-md w-full p-8">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-amber-800 mb-2">Admin Panel</h1>
+            <p class="text-gray-600">Wedding Invitation System</p>
+        </div>
+
+        <div class="bg-white p-8 rounded-xl shadow-lg">
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm uppercase tracking-wider text-gray-600 mb-2">Username</label>
+                    <input type="text" id="username" required 
+                        class="w-full border-b-2 border-gray-300 focus:border-amber-700 outline-hidden py-2 bg-transparent text-lg">
+                </div>
+                <div>
+                    <label class="block text-sm uppercase tracking-wider text-gray-600 mb-2">Password</label>
+                    <input type="password" id="password" required 
+                        class="w-full border-b-2 border-gray-300 focus:border-amber-700 outline-hidden py-2 bg-transparent text-lg">
+                </div>
+                <div id="errorMsg" class="text-red-600 text-sm hidden"></div>
+                <button type="submit" 
+                    class="w-full bg-amber-700 hover:bg-amber-800 text-white text-sm tracking-widest uppercase py-3 rounded-md transition duration-300">
+                    Login
+                </button>
+            </form>
+        </div>
+
+        <div class="text-center mt-6">
+            <a href="/" class="text-sm text-gray-500 hover:text-amber-700">← Kembali ke Undangan</a>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = window.location.origin + '/api';
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('adminSession', data.sessionId);
+                    localStorage.setItem('adminUsername', data.username);
+                    window.location.href = '/admin/dashboard.html';
+                } else {
+                    errorMsg.textContent = 'Invalid username or password';
+                    errorMsg.classList.remove('hidden');
+                }
+            } catch (error) {
+                errorMsg.textContent = 'Connection error. Please try again.';
+                errorMsg.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

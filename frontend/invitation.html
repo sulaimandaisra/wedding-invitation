@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan - Sulaimanda & Ilma</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Sacramento&display=swap" rel="stylesheet">
+    <style>
+        .font-serif-elegant { font-family: 'Cormorant Garamond', serif; }
+        .font-signature { font-family: 'Sacramento', cursive; }
+    </style>
+</head>
+<body class="bg-[#fcfbf7] text-gray-800 font-serif-elegant antialiased">
+
+    <button id="musicBtn" class="fixed bottom-6 right-6 z-50 bg-amber-700/80 hover:bg-amber-800 text-white p-3 rounded-full shadow-lg backdrop-blur-xs transition duration-300 flex items-center justify-center w-12 h-12">
+        <svg id="playIcon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="pauseIcon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
+
+    <audio id="weddingMusic" loop>
+        <source src="/asset/wedding-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <section class="min-h-screen flex flex-col justify-center items-center text-center px-4 bg-cover bg-center relative" style="background-image: linear-gradient(rgba(252, 251, 247, 0.8), rgba(252, 251, 247, 0.8)), url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070');">
+        <p class="text-sm tracking-[0.2em] uppercase text-gray-600 mb-4">The Wedding of</p>
+        <h1 class="text-6xl md:text-8xl font-signature text-amber-700 mb-4">Sulaimanda & Ilma</h1>
+        <h1 class="text-lg md:text-xl tracking-wide text-gray-700 italic">27 . 06 . 2026</h1>
+        
+        <div class="flex gap-4 mt-8 justify-center text-center">
+            <div class="bg-white/80 backdrop-blur-xs p-3 rounded-lg min-w-[70px] shadow-xs">
+                <span id="days" class="block text-2xl font-bold text-amber-800">00</span>
+                <span class="text-xs uppercase tracking-wider text-gray-500">Hari</span>
+            </div>
+            <div class="bg-white/80 backdrop-blur-xs p-3 rounded-lg min-w-[70px] shadow-xs">
+                <span id="hours" class="block text-2xl font-bold text-amber-800">00</span>
+                <span class="text-xs uppercase tracking-wider text-gray-500">Jam</span>
+            </div>
+            <div class="bg-white/80 backdrop-blur-xs p-3 rounded-lg min-w-[70px] shadow-xs">
+                <span id="minutes" class="block text-2xl font-bold text-amber-800">00</span>
+                <span class="text-xs uppercase tracking-wider text-gray-500">Menit</span>
+            </div>
+        </div>
+
+        <div id="guestGreeting" class="mt-8 hidden">
+            <p class="text-xl italic text-amber-800">Dear <span id="guestName" class="font-semibold"></span>,</p>
+            <p class="text-sm text-gray-600 mt-2">Tanpa mengurangi rasa hormat, kami mengundang Anda untuk hadir di acara pernikahan kami.</p>
+        </div>
+    </section>
+
+    <hr class="border-gray-200 w-1/3 mx-auto my-12">
+
+    <section class="max-w-4xl mx-auto px-6 py-12 text-center">
+        <p class="italic text-gray-600 mb-8 max-w-md mx-auto">
+            "Maka di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu istri-istri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya."
+        </p>
+        
+        <div class="grid md:grid-cols-2 gap-12 mt-12">
+            <div class="space-y-2">
+                <h2 class="text-4xl font-signature text-amber-700">Sulaimanda Isra Hasibuan, S.Kom</h2>
+                <p class="text-sm text-gray-500">Putra dari Bapak Drs. Bahrum Hasibuan & Lenasari Siregar, S.Pd</p>
+            </div>
+            <div class="space-y-2">
+                <h2 class="text-4xl font-signature text-amber-700">Fajar Wahyu Ilmawati, S.Ds</h2>
+                <p class="text-sm text-gray-500">Putri dari Bapak Subagyo Wahyu Widodo & Ibu Wahyuningrum</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-[#f4f1ea] py-16 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl tracking-widest uppercase text-amber-800 mb-12">Rangkaian Acara</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-xs space-y-4">
+                    <h3 class="text-2xl font-semibold border-b border-amber-200 pb-2">Akad Nikah</h3>
+                    <p class="text-amber-700 font-medium">Sabtu, 17 Januari 2026</p>
+                    <p class="text-sm text-gray-600">Pukul 09.00 - 10.30 WIB</p>
+                    <p class="text-sm text-gray-700 mt-4 font-semibold">Kantor Pemerintah Kalurahan Balecatur</p>
+                    <p class="text-xs text-gray-500">Jalan Wates No.KM 7, Pasekan Kidul, Balecatur, Gamping, Sleman, Yogyakarta</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-xs space-y-4">
+                    <h3 class="text-2xl font-semibold border-b border-amber-200 pb-2">Resepsi</h3>
+                    <p class="text-amber-700 font-medium">Sabtu, 27 Juni 2026</p>
+                    <p class="text-sm text-gray-600">Pukul 10.00 - Selesai</p>
+                    <p class="text-sm text-gray-700 mt-4 font-semibold">Aula SMK Negeri PP Lubuk Minturun</p>
+                    <p class="text-xs text-gray-500">Jl. Pertanian, Lubuk Minturun, Koto Tangah, Padang, Sumatera Barat</p>
+                </div>
+            </div>
+
+            <div class="mt-10">
+                <a href="https://maps.app.goo.gl/aeQzKB9yr2oyYMmw9" target="_blank" class="inline-block bg-amber-700 hover:bg-amber-800 text-white text-sm tracking-widest uppercase px-6 py-3 rounded-md transition duration-300">
+                    Buka Google Maps
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-md mx-auto px-6 py-16 text-center">
+        <h2 class="text-3xl tracking-widest uppercase text-amber-800 mb-4">Konfirmasi Kehadiran</h2>
+        <p class="text-sm text-gray-600 mb-8">Mohon konfirmasikan kehadiran Anda sebelum tanggal 1 Agustus 2026.</p>
+        
+        <form id="rsvpForm" class="text-left space-y-4">
+            <input type="hidden" id="guestId" value="">
+            <div>
+                <label class="block text-sm uppercase tracking-wider text-gray-600 mb-1">Nama Lengkap</label>
+                <input type="text" id="rsvpName" required class="w-full border-b border-gray-300 focus:border-amber-700 outline-hidden py-2 bg-transparent text-lg">
+            </div>
+            <div>
+                <label class="block text-sm uppercase tracking-wider text-gray-600 mb-1">Jumlah Tamu</label>
+                <select id="rsvpGuests" class="w-full border-b border-gray-300 focus:border-amber-700 outline-hidden py-2 bg-transparent text-lg">
+                    <option value="1">1 Orang</option>
+                    <option value="2">2 Orang</option>
+                    <option value="3">3 Orang</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm uppercase tracking-wider text-gray-600 mb-1">Konfirmasi</label>
+                <div class="mt-2 space-x-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="attendance" value="Hadir" checked class="text-amber-700 focus:ring-amber-500">
+                        <span class="ml-2 text-sm text-gray-700">Hadir</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="attendance" value="Tidak Hadir" class="text-amber-700 focus:ring-amber-500">
+                        <span class="ml-2 text-sm text-gray-700">Tidak Hadir</span>
+                    </label>
+                </div>
+            </div>
+            <button type="submit" class="w-full bg-amber-700 hover:bg-amber-800 text-white text-sm tracking-widest uppercase py-3 rounded-md transition duration-300 mt-6">
+                Kirim Konfirmasi
+            </button>
+        </form>
+    </section>
+
+    <section class="max-w-2xl mx-auto px-6 py-16">
+        <h2 class="text-3xl tracking-widest uppercase text-amber-800 mb-4 text-center">Ucapan & Doa</h2>
+        <p class="text-sm text-gray-600 mb-8 text-center">Berikan ucapan dan doa restu untuk kedua mempelai</p>
+        
+        <form id="wishesForm" class="text-left space-y-4 mb-12">
+            <input type="hidden" id="wishesGuestId" value="">
+            <div>
+                <label class="block text-sm uppercase tracking-wider text-gray-600 mb-1">Nama Lengkap</label>
+                <input type="text" id="wishesName" required class="w-full border-b border-gray-300 focus:border-amber-700 outline-hidden py-2 bg-transparent text-lg">
+            </div>
+            <div>
+                <label class="block text-sm uppercase tracking-wider text-gray-600 mb-1">Ucapan & Doa</label>
+                <textarea id="wishesMessage" required rows="4" class="w-full border border-gray-300 focus:border-amber-700 outline-hidden p-3 bg-transparent text-lg rounded-md resize-none" placeholder="Tulis ucapan dan doa restu Anda..."></textarea>
+            </div>
+            <button type="submit" class="w-full bg-amber-700 hover:bg-amber-800 text-white text-sm tracking-widest uppercase py-3 rounded-md transition duration-300">
+                Kirim Ucapan
+            </button>
+        </form>
+
+        <div id="wishesContainer" class="space-y-6"></div>
+    </section>
+
+    <footer class="bg-gray-900 text-white text-center py-8 text-xs tracking-widest uppercase opacity-80">
+        <p>© 2026 Sulaimanda & Ilma. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        const API_URL = window.location.origin + '/api';
+        let currentGuestId = null;
+
+        // Get guest ID from URL
+        function getGuestId() {
+            const path = window.location.pathname;
+            const match = path.match(/\/invitation\/([^\/]+)/);
+            return match ? match[1] : null;
+        }
+
+        // Load guest data
+        async function loadGuestData() {
+            currentGuestId = getGuestId();
+            if (!currentGuestId) return;
+
+            try {
+                const response = await fetch(`${API_URL}/guests/${currentGuestId}`);
+                if (response.ok) {
+                    const guest = await response.json();
+                    document.getElementById('guestName').textContent = guest.name;
+                    document.getElementById('guestGreeting').classList.remove('hidden');
+                    document.getElementById('guestId').value = guest.id;
+                    document.getElementById('wishesGuestId').value = guest.id;
+                    
+                    // Pre-fill RSVP name
+                    document.getElementById('rsvpName').value = guest.name;
+                    document.getElementById('wishesName').value = guest.name;
+                }
+            } catch (error) {
+                console.error('Error loading guest data:', error);
+            }
+        }
+
+        // Countdown timer
+        const weddingDate = new Date("2026-06-27T09:00:00").getTime();
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+            document.getElementById("days").innerHTML = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+
+            if (distance < 0) {
+                clearInterval(timer);
+            }
+        }, 1000);
+
+        // Music control
+        const music = document.getElementById("weddingMusic");
+        const musicBtn = document.getElementById("musicBtn");
+        const playIcon = document.getElementById("playIcon");
+        const pauseIcon = document.getElementById("pauseIcon");
+
+        document.body.addEventListener('click', function() {
+            if (music.paused && !musicBtn.classList.contains('manually-paused')) {
+                playMusic();
+            }
+        }, { once: true });
+
+        musicBtn.addEventListener("click", function() {
+            if (music.paused) {
+                playMusic();
+                musicBtn.classList.remove('manually-paused');
+            } else {
+                pauseMusic();
+                musicBtn.classList.add('manually-paused');
+            }
+        });
+
+        function playMusic() {
+            music.play();
+            playIcon.classList.add("hidden");
+            pauseIcon.classList.remove("hidden");
+        }
+
+        function pauseMusic() {
+            music.pause();
+            playIcon.classList.remove("hidden");
+            pauseIcon.classList.add("hidden");
+        }
+
+        // RSVP form submission
+        document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const guestId = document.getElementById('guestId').value;
+            const name = document.getElementById('rsvpName').value;
+            const guests = document.getElementById('rsvpGuests').value;
+            const attendance = document.querySelector('input[name="attendance"]:checked').value;
+            
+            if (!guestId) {
+                alert('Invalid invitation link');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/rsvp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ guestId, attendance, guests })
+                });
+                
+                if (response.ok) {
+                    alert('Terima kasih! Konfirmasi kehadiran Anda telah terkirim.');
+                    document.getElementById('rsvpForm').reset();
+                } else {
+                    alert('Terjadi kesalahan. Silakan coba lagi.');
+                }
+            } catch (error) {
+                alert('Terjadi kesalahan. Silakan coba lagi.');
+            }
+        });
+
+        // Wishes form submission
+        document.getElementById('wishesForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const guestId = document.getElementById('wishesGuestId').value;
+            const name = document.getElementById('wishesName').value;
+            const message = document.getElementById('wishesMessage').value;
+            
+            if (!guestId) {
+                alert('Invalid invitation link');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/wishes`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ guestId, message })
+                });
+                
+                if (response.ok) {
+                    alert('Terima kasih! Ucapan Anda telah terkirim.');
+                    document.getElementById('wishesForm').reset();
+                    document.getElementById('wishesName').value = name;
+                } else {
+                    alert('Terjadi kesalahan. Silakan coba lagi.');
+                }
+            } catch (error) {
+                alert('Terjadi kesalahan. Silakan coba lagi.');
+            }
+        });
+
+        // Load guest data on page load
+        loadGuestData();
+    </script>
+</body>
+</html>

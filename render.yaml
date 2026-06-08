@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: wedding-invitation
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && node server.js
+    envVars:
+      - key: ADMIN_USERNAME
+        value: sulaimandaisra
+      - key: ADMIN_PASSWORD
+        value: sule2026!@
+      - key: NODE_ENV
+        value: production
+    healthCheckPath: /

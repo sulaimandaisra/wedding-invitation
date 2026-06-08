@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Wedding Invitation</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        .font-serif-elegant { font-family: 'Cormorant Garamond', serif; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-serif-elegant">
+    <nav class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-amber-800">Admin Dashboard</h1>
+            <div class="flex items-center gap-4">
+                <span id="adminName" class="text-gray-600"></span>
+                <button id="logoutBtn" class="text-sm text-red-600 hover:text-red-800">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <h3 class="text-sm uppercase tracking-wider text-gray-500 mb-2">Total Guests</h3>
+                <p id="totalGuests" class="text-3xl font-bold text-amber-800">0</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <h3 class="text-sm uppercase tracking-wider text-gray-500 mb-2">RSVP Hadir</h3>
+                <p id="totalAttending" class="text-3xl font-bold text-green-600">0</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <h3 class="text-sm uppercase tracking-wider text-gray-500 mb-2">Total Wishes</h3>
+                <p id="totalWishes" class="text-3xl font-bold text-blue-600">0</p>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="bg-white rounded-xl shadow-sm">
+            <div class="border-b">
+                <nav class="flex">
+                    <button class="tab-btn px-6 py-4 text-sm font-medium border-b-2 border-amber-700 text-amber-700" data-tab="guests">Guests</button>
+                    <button class="tab-btn px-6 py-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="rsvp">RSVP</button>
+                    <button class="tab-btn px-6 py-4 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="wishes">Wishes</button>
+                </nav>
+            </div>
+
+            <!-- Guests Tab -->
+            <div id="guestsTab" class="p-6">
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Add New Guest</h3>
+                    <form id="addGuestForm" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <input type="text" id="guestName" placeholder="Guest Name" required 
+                                class="border border-gray-300 rounded-md px-4 py-2 focus:border-amber-700 focus:outline-hidden">
+                            <input type="text" id="guestPhone" placeholder="Phone Number (optional)" 
+                                class="border border-gray-300 rounded-md px-4 py-2 focus:border-amber-700 focus:outline-hidden">
+                        </div>
+                        <button type="submit" class="bg-amber-700 hover:bg-amber-800 text-white px-6 py-2 rounded-md text-sm uppercase tracking-wider">
+                            Add Guest
+                        </button>
+                    </form>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Guest List</h3>
+                    <div id="guestList" class="space-y-3"></div>
+                </div>
+            </div>
+
+            <!-- RSVP Tab -->
+            <div id="rsvpTab" class="p-6 hidden">
+                <div id="rsvpList" class="space-y-3"></div>
+            </div>
+
+            <!-- Wishes Tab -->
+            <div id="wishesTab" class="p-6 hidden">
+                <div id="wishesList" class="space-y-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = window.location.origin + '/api';
+        let sessionId = localStorage.getItem('adminSession');
+
+        // Check authentication
+        if (!sessionId) {
+            window.location.href = '/admin/';
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', async function() {
+            await fetch(`${API_URL}/admin/logout`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${sessionId}` }
+            });
+            localStorage.removeItem('adminSession');
+            localStorage.removeItem('adminUsername');
+            window.location.href = '/admin/';
+        });
+
+        // Load admin info
+        document.getElementById('adminName').textContent = 'Welcome, ' + localStorage.getItem('adminUsername');
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tab = this.dataset.tab;
+                
+                document.querySelectorAll('.tab-btn').forEach(b => {
+                    b.classList.remove('border-amber-700', 'text-amber-700');
+                    b.classList.add('border-transparent', 'text-gray-500');
+                });
+                this.classList.add('border-amber-700', 'text-amber-700');
+                this.classList.remove('border-transparent', 'text-gray-500');
+                
+                document.querySelectorAll('[id$="Tab"]').forEach(tabContent => {
+                    tabContent.classList.add('hidden');
+                });
+                document.getElementById(tab + 'Tab').classList.remove('hidden');
+            });
+        });
+
+        // Load guests
+        async function loadGuests() {
+            const response = await fetch(`${API_URL}/guests`, {
+                headers: { 'Authorization': `Bearer ${sessionId}` }
+            });
+            if (response.ok) {
+                const guests = await response.json();
+                document.getElementById('totalGuests').textContent = guests.length;
+                
+                const guestList = document.getElementById('guestList');
+                guestList.innerHTML = guests.map(guest => `
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div>
+                            <p class="font-semibold">${guest.name}</p>
+                            <p class="text-sm text-gray-500">${guest.phone || 'No phone'}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="copyInvitationLink('${guest.id}')" class="text-sm bg-amber-100 text-amber-800 px-3 py-1 rounded hover:bg-amber-200">
+                                Copy Link
+                            </button>
+                            <button onclick="deleteGuest('${guest.id}')" class="text-sm text-red-600 hover:text-red-800">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Copy invitation link
+        function copyInvitationLink(guestId) {
+            const link = `${window.location.origin}/invitation/${guestId}`;
+            navigator.clipboard.writeText(link);
+            alert('Link copied: ' + link);
+        }
+
+        // Delete guest
+        async function deleteGuest(guestId) {
+            if (confirm('Are you sure you want to delete this guest?')) {
+                const response = await fetch(`${API_URL}/guests/${guestId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${sessionId}` }
+                });
+                if (response.ok) {
+                    loadGuests();
+                }
+            }
+        }
+
+        // Add guest
+        document.getElementById('addGuestForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('guestName').value;
+            const phone = document.getElementById('guestPhone').value;
+            
+            const response = await fetch(`${API_URL}/guests`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${sessionId}`
+                },
+                body: JSON.stringify({ name, phone })
+            });
+            
+            if (response.ok) {
+                document.getElementById('guestName').value = '';
+                document.getElementById('guestPhone').value = '';
+                loadGuests();
+            }
+        });
+
+        // Load RSVP
+        async function loadRSVP() {
+            const response = await fetch(`${API_URL}/rsvp`, {
+                headers: { 'Authorization': `Bearer ${sessionId}` }
+            });
+            if (response.ok) {
+                const rsvp = await response.json();
+                const attending = rsvp.filter(r => r.attendance === 'Hadir').length;
+                document.getElementById('totalAttending').textContent = attending;
+                
+                const rsvpList = document.getElementById('rsvpList');
+                rsvpList.innerHTML = rsvp.map(r => `
+                    <div class="p-4 bg-gray-50 rounded-lg flex justify-between items-start">
+                        <div>
+                            <p class="font-semibold">${r.guestName}</p>
+                            <p class="text-sm text-gray-600">${r.attendance} - ${r.guests} guest(s)</p>
+                            <p class="text-xs text-gray-400">${new Date(r.submittedAt).toLocaleString('id-ID')}</p>
+                        </div>
+                        <button onclick="deleteRSVP('${r.id}')" class="text-sm text-red-600 hover:text-red-800 ml-4">
+                            Delete
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Delete RSVP
+        async function deleteRSVP(rsvpId) {
+            if (confirm('Are you sure you want to delete this RSVP?')) {
+                const response = await fetch(`${API_URL}/rsvp/${rsvpId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${sessionId}` }
+                });
+                if (response.ok) {
+                    loadRSVP();
+                }
+            }
+        }
+
+        // Load Wishes
+        async function loadWishes() {
+            const response = await fetch(`${API_URL}/wishes`, {
+                headers: { 'Authorization': `Bearer ${sessionId}` }
+            });
+            if (response.ok) {
+                const wishes = await response.json();
+                document.getElementById('totalWishes').textContent = wishes.length;
+                
+                const wishesList = document.getElementById('wishesList');
+                wishesList.innerHTML = wishes.map(w => `
+                    <div class="p-4 bg-gray-50 rounded-lg flex justify-between items-start">
+                        <div>
+                            <p class="font-semibold text-amber-800">${w.guestName}</p>
+                            <p class="text-sm text-gray-600 italic">"${w.message}"</p>
+                            <p class="text-xs text-gray-400 mt-1">${new Date(w.submittedAt).toLocaleString('id-ID')}</p>
+                        </div>
+                        <button onclick="deleteWish('${w.id}')" class="text-sm text-red-600 hover:text-red-800 ml-4">
+                            Delete
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Delete Wish
+        async function deleteWish(wishId) {
+            if (confirm('Are you sure you want to delete this wish?')) {
+                const response = await fetch(`${API_URL}/wishes/${wishId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${sessionId}` }
+                });
+                if (response.ok) {
+                    loadWishes();
+                }
+            }
+        }
+
+        // Initial load
+        loadGuests();
+        loadRSVP();
+        loadWishes();
+    </script>
+</body>
+</html>
